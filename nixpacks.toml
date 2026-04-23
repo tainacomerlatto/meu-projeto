@@ -1,5 +1,2 @@
-[phases.build]
-cmds = []
-
 [start]
-cmd = "python3 -m http.server 80"
+cmd = "python3 -m http.server 80 --bind 0.0.0.0"
