@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SynGas | Reduzieren Sie Ihren Kraftstoffverbrauch</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: #fff; overflow-x: hidden; }
+a { text-decoration: none; }
+
+.sticky-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 999;
+  background: #1a1a1a; color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; gap: 16px;
+}
+.sticky-bar .left { display: flex; align-items: center; gap: 12px; font-size: 14px; flex-wrap: wrap; }
+.sticky-bar .stars { color: #f5c518; }
+.sticky-bar .timer-val { color: #e8453c; font-weight: 700; font-size: 16px; }
+.btn-sticky { background: #e8453c; color: #fff; font-weight: 800; padding: 12px 28px; border-radius: 6px; font-size: 15px; white-space: nowrap; display: inline-block; }
+
+.top-announce { background: #e8453c; color: #fff; text-align: center; padding: 10px 16px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.top-announce .timer { font-size: 18px; font-weight: 800; }
+
+nav { background: #fff; border-bottom: 1px solid #eee; padding: 14px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.nav-logo { height: 38px; }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a { color: #333; font-size: 13px; font-weight: 500; }
+.nav-links a:hover { color: #e8453c; }
+.btn-nav { background: #e8453c; color: #fff; padding: 10px 22px; border-radius: 6px; font-weight: 700; font-size: 14px; }
+
+.hero { background: linear-gradient(160deg, #0d0d0d 0%, #1a1a2e 100%); padding: 70px 40px 60px; display: flex; align-items: center; justify-content: center; gap: 60px; flex-wrap: wrap; }
+.hero-left { max-width: 560px; color: #fff; }
+.hero-left h1 { font-size: 44px; font-weight: 900; line-height: 1.15; margin-bottom: 16px; }
+.hero-left p { color: #bbb; font-size: 17px; margin-bottom: 24px; line-height: 1.6; }
+.hero-bullets { list-style: none; margin-bottom: 28px; }
+.hero-bullets li { padding: 6px 0; font-size: 16px; color: #ddd; display: flex; align-items: center; gap: 10px; }
+.hero-bullets li::before { content: "✓"; color: #e8453c; font-weight: 900; width: 22px; height: 22px; background: rgba(232,69,60,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; }
+.hero-social { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.hero-social img { height: 32px; }
+.hero-social .info { font-size: 14px; color: #ccc; }
+.hero-social strong { color: #fff; }
+.hero-stars { color: #f5c518; font-size: 20px; }
+.btn-hero { display: inline-flex; flex-direction: column; align-items: center; background: linear-gradient(135deg, #e8453c, #c0392b); color: #fff; padding: 16px 40px; border-radius: 10px; font-size: 19px; font-weight: 800; box-shadow: 0 8px 24px rgba(232,69,60,0.4); }
+.btn-hero .badge-in-btn { background: rgba(255,255,255,0.2); border-radius: 4px; padding: 2px 10px; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.guarantee-text { color: #888; font-size: 13px; margin-top: 10px; }
+.hero-right img { max-width: 340px; width: 100%; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5)); }
+
+.trust-strip { background: #f9f9f9; border-bottom: 1px solid #eee; padding: 24px 40px; display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.trust-strip img { height: 22px; opacity: 0.4; filter: grayscale(1); }
+
+.section { padding: 80px 40px; }
+.section-dark { background: #0d0d0d; color: #fff; }
+.section-gray { background: #f5f5f5; }
+.section-title { font-size: 36px; font-weight: 900; text-align: center; margin-bottom: 12px; line-height: 1.2; }
+.section-subtitle { text-align: center; color: #666; font-size: 17px; max-width: 680px; margin: 0 auto 52px; line-height: 1.6; }
+.section-dark .section-subtitle { color: #aaa; }
+.section-dark .section-title { color: #fff; }
+
+.features-wrap { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 64px; }
+.feature-row { display: flex; align-items: center; gap: 48px; flex-wrap: wrap; }
+.feature-row.reverse { flex-direction: row-reverse; }
+.feature-row img { width: 100%; max-width: 380px; border-radius: 16px; flex-shrink: 0; }
+.feature-text { flex: 1; min-width: 260px; }
+.feature-text h3 { font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+.feature-text p { color: #555; font-size: 16px; line-height: 1.7; }
+
+.benefits-icons { display: flex; flex-wrap: wrap; justify-content: center; gap: 32px; max-width: 900px; margin: 0 auto 56px; }
+.benefit-item { text-align: center; width: 120px; }
+.benefit-item img { width: 64px; height: 64px; margin-bottom: 10px; }
+.benefit-item p { font-size: 13px; font-weight: 600; color: #444; }
+
+.comparison-wrap { display: flex; max-width: 800px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,0.10); }
+.comp-col { flex: 1; padding: 32px 28px; }
+.comp-col.without { background: #f0f0f0; }
+.comp-col.with { background: #0d0d0d; color: #fff; }
+.comp-col h3 { font-size: 18px; font-weight: 800; margin-bottom: 20px; }
+.comp-col.with h3 { color: #e8453c; }
+.comp-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.comp-col ul li { font-size: 15px; display: flex; align-items: flex-start; gap: 10px; }
+.comp-col.without ul li::before { content: "✗"; color: #bbb; font-weight: 700; flex-shrink: 0; }
+.comp-col.with ul li::before { content: "✓"; color: #e8453c; font-weight: 700; flex-shrink: 0; }
+.comp-col.without ul li { color: #888; }
+
+.steps-wrap { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; }
+.step-card { flex: 1; min-width: 240px; max-width: 300px; text-align: center; }
+.step-card img.step-photo { width: 100%; border-radius: 16px; margin-bottom: 20px; }
+.step-num { font-size: 52px; font-weight: 900; color: #e8453c; line-height: 1; margin-bottom: 8px; }
+.step-icon { height: 48px; margin-bottom: 12px; }
+.step-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.step-card p { color: #666; font-size: 15px; line-height: 1.6; }
+
+.stats-wrap { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; max-width: 800px; margin: 0 auto 48px; }
+.stat-item { text-align: center; }
+.stat-item .number { font-size: 48px; font-weight: 900; color: #e8453c; }
+.stat-item p { color: #aaa; font-size: 14px; max-width: 200px; line-height: 1.5; margin: 0 auto; }
+
+.showcase-wrap { display: flex; gap: 32px; align-items: center; justify-content: center; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; }
+.showcase-imgs { display: flex; gap: 16px; flex-wrap: wrap; }
+.showcase-imgs img { width: 200px; border-radius: 12px; }
+
+.vs-table { max-width: 900px; margin: 40px auto 0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,0.1); }
+.vs-table table { width: 100%; border-collapse: collapse; }
+.vs-table th { padding: 18px 20px; text-align: center; font-size: 15px; font-weight: 700; background: #f5f5f5; }
+.vs-table th.hl { background: #e8453c; color: #fff; }
+.vs-table td { padding: 14px 20px; text-align: center; border-top: 1px solid #eee; font-size: 15px; }
+.vs-table td:first-child { text-align: left; font-weight: 600; color: #333; }
+.chk { color: #27ae60; font-size: 20px; font-weight: 700; }
+.crs { color: #ccc; font-size: 20px; }
+.vs-table tr:nth-child(even) td { background: #fafafa; }
+
+.rating-summary { display: flex; align-items: center; gap: 32px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+.rating-big { text-align: center; }
+.rating-big .num { font-size: 72px; font-weight: 900; line-height: 1; }
+.rating-big .stars { color: #f5c518; font-size: 24px; }
+.rating-big p { color: #666; font-size: 14px; margin-top: 4px; }
+.rating-bars { display: flex; flex-direction: column; gap: 8px; }
+.bar-row { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #666; }
+.bar-track { width: 180px; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; background: #f5c518; border-radius: 4px; }
+
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
+.review-card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); border: 1px solid #f0f0f0; }
+.review-card .stars { color: #f5c518; font-size: 16px; margin-bottom: 10px; }
+.review-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.review-card p { color: #555; font-size: 14px; line-height: 1.65; }
+.reviewer-info { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+.reviewer-name { font-weight: 700; font-size: 14px; }
+.reviewer-badge { background: #e8f5e9; color: #27ae60; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+
+.expert-wrap { display: flex; gap: 40px; align-items: center; max-width: 900px; margin: 56px auto 0; flex-wrap: wrap; }
+.expert-wrap img { width: 200px; border-radius: 16px; flex-shrink: 0; }
+.expert-quote blockquote { font-size: 17px; line-height: 1.8; color: #444; font-style: italic; border-left: 4px solid #e8453c; padding-left: 20px; margin-bottom: 16px; }
+.expert-quote cite { font-weight: 700; font-size: 15px; color: #333; font-style: normal; }
+
+.guarantee-box { background: #fff8f8; border: 2px solid #e8453c; border-radius: 16px; padding: 40px; max-width: 700px; margin: 0 auto; text-align: center; }
+.guarantee-box h3 { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #e8453c; }
+.guarantee-box p { color: #555; font-size: 16px; line-height: 1.7; }
+
+.faq-wrap { max-width: 780px; margin: 0 auto; }
+.faq-item { border: 1px solid #eee; border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+.faq-q { padding: 18px 24px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; }
+.faq-q:hover { background: #fafafa; }
+.faq-q .arrow { color: #e8453c; font-size: 20px; transition: transform 0.2s; }
+.faq-q.open .arrow { transform: rotate(45deg); }
+.faq-a { padding: 0 24px 18px; color: #555; font-size: 15px; line-height: 1.7; display: none; }
+.faq-a.show { display: block; }
+
+.cta-section { background: linear-gradient(160deg, #0d0d0d 0%, #1a1a2e 100%); padding: 80px 40px 120px; text-align: center; color: #fff; }
+.cta-section h2 { font-size: 38px; font-weight: 900; margin-bottom: 12px; }
+.cta-section > p { color: #aaa; font-size: 17px; margin-bottom: 28px; }
+.cta-features { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+.cta-feature { display: flex; align-items: center; gap: 8px; font-size: 15px; color: #ccc; }
+.cta-feature::before { content: "✓"; color: #e8453c; font-weight: 700; }
+.timer-cta { font-size: 36px; font-weight: 900; color: #e8453c; margin: 16px 0 28px; }
+.btn-cta { display: inline-block; background: linear-gradient(135deg, #e8453c, #c0392b); color: #fff; padding: 20px 56px; border-radius: 10px; font-size: 22px; font-weight: 800; box-shadow: 0 8px 32px rgba(232,69,60,0.45); }
+
+footer { background: #111; color: #888; padding: 56px 40px 24px; }
+.footer-grid { display: flex; gap: 48px; flex-wrap: wrap; margin-bottom: 40px; }
+.footer-col { min-width: 180px; }
+.footer-col .logo { height: 32px; margin-bottom: 14px; }
+.footer-col p { font-size: 14px; line-height: 1.7; max-width: 240px; }
+.footer-col h4 { color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul li a { color: #888; font-size: 14px; }
+.footer-col ul li a:hover { color: #fff; }
+.footer-bottom { border-top: 1px solid #222; padding-top: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-bottom p { font-size: 13px; }
+.footer-bottom img { height: 28px; opacity: 0.5; }
+
+@media (max-width: 768px) {
+  nav { padding: 12px 16px; }
+  .nav-links { display: none; }
+  .hero { padding: 48px 20px; }
+  .hero-left h1 { font-size: 28px; }
+  .section { padding: 52px 20px; }
+  .section-title { font-size: 26px; }
+  .comparison-wrap { flex-direction: column; }
+  .showcase-imgs img { width: 140px; }
+  footer { padding: 40px 20px 90px; }
+  .cta-section { padding-bottom: 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-announce">
+  <span>RESTPOSTENANGEBOT | BIS ZU 75% RABATT!</span>
+  <span class="timer" id="timer-top">00:14:59</span>
+  <span>🚚 schneller Versand &nbsp; ↩️ 30 Tage Geld-zurück</span>
+</div>
+
+<nav>
+  <img class="nav-logo" src="https://get-syngas.com/wp-content/uploads/logo-5.svg" alt="SynGas">
+  <ul class="nav-links">
+    <li><a href="#features">FUNKTIONEN</a></li>
+    <li><a href="#steps">WIE ES FUNKTIONIERT</a></li>
+    <li><a href="#testimonials">Kundenstimmen</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="https://get-syngas.com/legal/contact-us-de/">KONTAKT</a></li>
+  </ul>
+  <a class="btn-nav" href="https://www.fasttrack15.com/P3F53KPH/2KTLBD86/?uid=44292">Jetzt bestellen!</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <h1>Senken Sie Ihren Kraftstoffverbrauch um bis zu 55% mit SynGas</h1>
+    <p>Erschließen Sie Effizienz: Weiter fahren, weniger ausgeben mit SynGas Technologie</p>
+    <ul class="hero-bullets">
+      <li>Spart Benzin</li>
+      <li>Wartungsfrei</li>
+      <li>Einfach zu bedienen</li>
+    </ul>
+    <div class="hero-social">
+      <img src="https://get-syngas.com/img/U29jaWFsLXBlb3BsZS0yLTIucG5n-h_32.png" alt="">
+      <div class="info">
+        <strong>8K+</strong> Glücklich &nbsp;
+        <span class="hero-stars">★★★★½</span>
+        <strong> 4.7</strong>
+        <span style="color:#888;font-size:13px;"> Durchschnittliche Bewertung</span>
+      </div>
+    </div>
+    <a class="btn-hero" href="https://www.fasttrack15.com/P3F53KPH/2KTLBD86/?uid=44292">
+      <span class="badge-in-btn">75% Rabatt</span>
+      Ja, ich möchte SynGas
+    </a>
+    <p class="guarantee-text">✓ 30-Tage-Geld-zurück-Garantie</p>
+  </div>
+  <div class="hero-right">
+    <img src="https://get-syngas.com/img/MDFfSGVyby1XZWJfbW9iaWxlX1N5bmdhc19ERS5wbmc-w_348.png" alt="SynGas">
+  </div>
+</section>
+
+<div class="trust-strip">
+  <img src="https://get-syngas.com/wp-content/uploads/techradar-logo-w-1.svg" alt="TechRadar">
+  <img src="https://get-syngas.com/wp-content/uploads/techcrunch-logo-w-2.svg" alt="TechCrunch">
+  <img src="https://get-syngas.com/wp-content/uploads/logo-Wired-w-2.svg" alt="Wired">
+  <img src="https://get-syngas.com/wp-content/uploads/fox-logo-w-1.svg" alt="Fox">
+  <img src="https://get-syngas.com/wp-content/uploads/gizmodo-logo-w-1.svg" alt="Gizmodo">
+</div>
+
+<section class="section" id="features">
+  <h2 class="section-title">Entwickelt für Kraftstoffeffizienz</h2>
+  <p class="section-subtitle">Stoppen Sie übermäßige Ausgaben für Kraftstoff mit SynGas. Steigende Kraftstoffpreise belasten Ihre Finanzen — mit SynGas können Sie aufhören, zu viel Geld für Kraftstoff auszugeben.</p>
+  <div class="features-wrap">
+    <div class="feature-row">
+      <img src="https://get-syngas.com/img/MS1zaXR1YXRpb25zLmpwZw.jpg" alt="">
+      <div class="feature-text">
+        <h3>Gesteigerte Leistung</h3>
+        <p>Erhöhen Sie Ihre Fahrleistung mit dem SynGas Kraft- und Leistungsschub. Dieser Kraftstoffsparer sorgt für ein dynamisches Fahrerlebnis, indem er Kraftstoff spart und die Gesamtleistung erhöht.</p>
+      </div>
+    </div>
+    <div class="feature-row reverse">
+      <img src="https://get-syngas.com/img/Mi1zaXR1YXRpb25zLTEuanBn.jpg" alt="">
+      <div class="feature-text">
+        <h3>Schlank und kompakt</h3>
+        <p>Das moderne Design sorgt für eine verbesserte Kraftstoffeffizienz, ohne Kompromisse bei Platz oder Ästhetik einzugehen. Genießen Sie die Vorteile eines eleganten, leichten Geräts.</p>
+      </div>
+    </div>
+    <div class="feature-row">
+      <img src="https://get-syngas.com/img/My1zaXR1YXRpb25zLmpwZw.jpg" alt="">
+      <div class="feature-text">
+        <h3>Umweltschonend</h3>
+        <p>Dieser Spritsparer reduziert aktiv die Kohlenstoffemissionen durch Optimierung des Kraftstoffverbrauchs und trägt so zum weltweiten Kampf gegen den Klimawandel bei.</p>
+      </div>
+    </div>
+    <div class="feature-row reverse">
+      <img src="https://get-syngas.com/img/NC1zaXR1YXRpb25zLTEuanBn.jpg" alt="">
+      <div class="feature-text">
+        <h3>Vielseitige Auto-Kompatibilität</h3>
+        <p>SynGas ist Ihr anpassungsfähiger, kraftstoffsparender Begleiter, geeignet für eine Vielzahl von Automodellen mit OBD2-Anschluss — ab Baujahr 1996.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-gray">
+  <h2 class="section-title">Genießen Sie das Fahren mit SynGas</h2>
+  <div class="benefits-icons" style="margin-top:40px;">
+    <div class="benefit-item"><img src="https://get-syngas.com/wp-content/uploads/1-better-mileage.svg" alt=""><p>Mehr Effizienz</p></div>
+    <div class="benefit-item"><img src="https://get-syngas.com/wp-content/uploads/2-savings.svg" alt=""><p>Ersparnisse</p></div>
+    <div class="benefit-item"><img src="https://get-syngas.com/wp-content/uploads/3-power-boost.svg" alt=""><p>Leistung</p></div>
+    <div class="benefit-item"><img src="https://get-syngas.com/wp-content/uploads/4-discreet.svg" alt=""><p>Diskret</p></div>
+    <div class="benefit-item"><img src="https://get-syngas.com/wp-content/uploads/5-user-friendly.svg" alt=""><p>Einfach</p></div>
+    <div class="benefit-item"><img src="https://get-syngas.com/wp-content/uploads/6-lower-co2.svg" alt=""><p>Geringere CO2-Emissionen</p></div>
+  </div>
+  <div class="comparison-wrap">
+    <div class="comp-col without">
+      <h3>Fahren ohne SynGas</h3>
+      <ul>
+        <li>Erhöhter Kraftstoffverbrauch</li>
+        <li>Schlechte Fahrzeugleistung</li>
+        <li>Steigende Treibstoffkosten</li>
+        <li>Auswirkungen auf die Umwelt</li>
+        <li>Schlechtes Fahrgefühl</li>
+      </ul>
+    </div>
+    <div class="comp-col with">
+      <h3>Fahren mit SynGas</h3>
+      <ul>
+        <li>Kraftstoffeinsparung bei jeder Fahrt</li>
+        <li>Optimale Motoreffizienz</li>
+        <li>Reduzierter Kohlenstoff-Fußabdruck</li>
+        <li>Energie- und kosteneffiziente Fahrten</li>
+        <li>Eine grünere, sanftere Fahrt</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="steps">
+  <h2 class="section-title">Sparen Sie Kraftstoff in 3 einfachen Schritten</h2>
+  <p class="section-subtitle">Sind Sie es leid, zu viel Geld für Kraftstoff auszugeben? SynGas kann dieses Problem lösen und die Leistung Ihres Autos in 3 einfachen Schritten verbessern.</p>
+  <div class="steps-wrap">
+    <div class="step-card">
+      <img class="step-photo" src="https://get-syngas.com/img/MS1QbHVnLWluLTEuanBn-w_360.jpg" alt="">
+      <div class="step-num">01</div>
+      <img class="step-icon" src="https://get-syngas.com/wp-content/uploads/1-plug-1-1.svg" alt="">
+      <h3>Einstecken</h3>
+      <p>Stecken Sie SynGas in den OBD2-Anschluss Ihres Fahrzeugs.</p>
+    </div>
+    <div class="step-card">
+      <img class="step-photo" src="https://get-syngas.com/img/Mi1DYWxpYnJhdGUuanBn-w_360.jpg" alt="">
+      <div class="step-num">02</div>
+      <img class="step-icon" src="https://get-syngas.com/wp-content/uploads/2-calibrate.svg" alt="">
+      <h3>Kalibrieren</h3>
+      <p>Schalten Sie die Zündung für 30 Sekunden ein, damit sich das Gerät anpasst.</p>
+    </div>
+    <div class="step-card">
+      <img class="step-photo" src="https://get-syngas.com/img/My1TYXZlLWZ1ZWwtMS5qcGc-w_360.jpg" alt="">
+      <div class="step-num">03</div>
+      <img class="step-icon" src="https://get-syngas.com/wp-content/uploads/3-save.svg" alt="">
+      <h3>Kraftstoff sparen</h3>
+      <p>Starten Sie den Motor und genießen Sie sofortige Einsparungen bei jeder Fahrt.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-dark">
+  <h2 class="section-title">Wie es sich von anderen abhebt</h2>
+  <p class="section-subtitle">SynGas ist mit modernster Technologie ausgestattet — wo Innovation auf die offene Straße trifft.</p>
+  <div class="stats-wrap">
+    <div class="stat-item">
+      <div class="number">&gt;2500 €</div>
+      <p>Durchschnittlicher Jahresbetrag für Benzin — über 200 € monatlich</p>
+    </div>
+    <div class="stat-item">
+      <div class="number">4,6t</div>
+      <p>CO2 produziert ein typischer PKW im Durchschnitt pro Jahr</p>
+    </div>
+  </div>
+  <div class="showcase-wrap">
+    <div class="showcase-imgs">
+      <img src="https://get-syngas.com/img/NS0xLWNvbXBhY3QtZGVzaWduLTEuanBn-h_420.jpg" alt="Kompaktes Design">
+      <img src="https://get-syngas.com/img/NS0yLWNvbXBhdGlibGUtd2l0aC12YXJpb3VzLWNhcnMuanBn-h_420.jpg" alt="Kompatibel">
+    </div>
+    <img src="https://get-syngas.com/img/U3luZ2FzX1ZlcnRpY2FsX0RFLmpwZw-w_390.jpg" alt="SynGas" style="max-width:260px;border-radius:16px;">
+  </div>
+</section>
+
+<section class="section section-gray">
+  <h2 class="section-title">Wie es sich von anderen abhebt</h2>
+  <div class="vs-table">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left;">Merkmal</th>
+          <th class="hl">SynGas</th>
+          <th>Kraftstoff-Ionisatoren</th>
+          <th>Kraftstoff-Additive</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Spart Kraftstoff</td><td><span class="chk">✓</span></td><td><span class="crs">✗</span></td><td><span class="crs">✗</span></td></tr>
+        <tr><td>Klein und tragbar</td><td><span class="chk">✓</span></td><td><span class="crs">✗</span></td><td><span class="chk">✓</span></td></tr>
+        <tr><td>Einfach zu benutzen</td><td><span class="chk">✓</span></td><td><span class="crs">✗</span></td><td><span class="crs">✗</span></td></tr>
+        <tr><td>Wartungsfrei</td><td><span class="chk">✓</span></td><td><span class="crs">✗</span></td><td><span class="crs">✗</span></td></tr>
+        <tr><td>Verschiedene Kompatibilität</td><td><span class="chk">✓</span></td><td><span class="crs">✗</span></td><td><span class="chk">✓</span></td></tr>
+        <tr><td>Einfache Installation</td><td><span class="chk">✓</span></td><td><span class="crs">✗</span></td><td><span class="crs">✗</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="text-align:center;margin-top:36px;">
+    <a class="btn-cta" href="https://www.fasttrack15.com/P3F53KPH/2KTLBD86/?uid=44292" style="font-size:18px;padding:14px 44px;">75% sparen</a>
+  </div>
+</section>
+
+<section class="section" id="testimonials">
+  <h2 class="section-title">Tausende zufriedene Kunden lieben SynGas</h2>
+  <div class="rating-summary" style="margin-top:32px;">
+    <div class="rating-big">
+      <div class="num">4.7</div>
+      <div class="stars">★★★★½</div>
+      <p>Ausgezeichnet<br>Basierend auf <strong>8.258</strong> Bewertungen</p>
+    </div>
+    <div class="rating-bars">
+      <div class="bar-row"><span>5★</span><div class="bar-track"><div class="bar-fill" style="width:65%"></div></div><span>5.372</span></div>
+      <div class="bar-row"><span>4★</span><div class="bar-track"><div class="bar-fill" style="width:35%"></div></div><span>2.876</span></div>
+      <div class="bar-row"><span>3★</span><div class="bar-track"><div class="bar-fill" style="width:1%"></div></div><span>6</span></div>
+      <div class="bar-row"><span>2★</span><div class="bar-track"><div class="bar-fill" style="width:0.5%"></div></div><span>3</span></div>
+      <div class="bar-row"><span>1★</span><div class="bar-track"><div class="bar-fill" style="width:0.2%"></div></div><span>1</span></div>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card"><div class="stars">★★★★★</div><h4>Kraftstoffsparende Lösung</h4><p>Als jemand, der täglich lange Strecken zurücklegt, ist die Kraftstoffeffizienz für mich von entscheidender Bedeutung. SynGas hat die Kilometerleistung und die Gesamtleistung meines Autos deutlich verbessert.</p><div class="reviewer-info"><span class="reviewer-name">Anna S. — Deutschland</span><span class="reviewer-badge">✓ Geprüft</span></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><h4>Ein Muss für jeden Autoliebhaber</h4><p>Dieses kleine Gerät hat die Kraftstoffeffizienz meines Fahrzeugs verbessert und ihm einen zusätzlichen Kick gegeben. Die einfache Installation und die spürbaren Ergebnisse machen es zu einer Top-Empfehlung.</p><div class="reviewer-info"><span class="reviewer-name">Leon B. — Deutschland</span><span class="reviewer-badge">✓ Geprüft</span></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><h4>Extra Auto-Boost</h4><p>Es hat nicht nur meine Benzinkosten gesenkt, sondern meinem Fahrzeug auch einen zusätzlichen Schub an Pferdestärken gegeben. Ich empfehle es jedem, der an der Zapfsäule sparen möchte.</p><div class="reviewer-info"><span class="reviewer-name">Niklas J. — Deutschland</span><span class="reviewer-badge">✓ Geprüft</span></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><h4>Die perfekte Wahl!</h4><p>Die Reduzierung des Kraftstoffverbrauchs ist eine Erleichterung für mein Budget. Es ist eine kluge Investition, die sich schnell auszahlt. Auf jeden Fall eine Überlegung wert!</p><div class="reviewer-info"><span class="reviewer-name">Maximilian H. — Deutschland</span><span class="reviewer-badge">✓ Geprüft</span></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><h4>Übertroffen alle Träume</h4><p>SynGas hat meine Erwartungen durch die Optimierung des Kraftstoffverbrauchs meines Lieferwagens übertroffen. Ein Muss für andere Lieferfahrer!</p><div class="reviewer-info"><span class="reviewer-name">Elias G. — Deutschland</span><span class="reviewer-badge">✓ Geprüft</span></div></div>
+    <div class="review-card"><div class="stars">★★★★½</div><h4>Finanzieller Retter!</h4><p>SynGas hat für beständige Kraftstoffeinsparungen gesorgt, ohne Kompromisse bei der Leistung einzugehen. Die perfekte Wahl für Stadtfahrer wie mich.</p><div class="reviewer-info"><span class="reviewer-name">Felix S. — Deutschland</span><span class="reviewer-badge">✓ Geprüft</span></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><h4>Eco Driving Lösung</h4><p>Wir haben eine deutliche Verbesserung des Benzinverbrauchs festgestellt. Es ist unglaublich, wie ein kleines Gerät einen so großen Unterschied machen kann.</p><div class="reviewer-info"><span class="reviewer-name">Paul H. — Deutschland</span><span class="reviewer-badge">✓ Geprüft</span></div></div>
+    <div class="review-card"><div class="stars">★★★★★</div><h4>Ultimativer Finanzretter!</h4><p>SynGas ist eine fantastische Ergänzung für unser Familienauto, die unsere Kraftstoffkosten erheblich reduziert. Sehr empfehlenswert für budgetbewusste Eltern!</p><div class="reviewer-info"><span class="reviewer-name">Emma G. — Deutschland</span><span class="reviewer-badge">✓ Geprüft</span></div></div>
+  </div>
+  <div class="expert-wrap">
+    <img src="https://get-syngas.com/img/OC1zcGVjaWFsaXN0LTEuanBn-w_600.jpg" alt="Experte">
+    <div class="expert-quote">
+      <blockquote>Als Maschinenbauingenieur habe ich umfangreiche Erfahrungen mit verschiedenen Lösungen zur Kraftstoffeinsparung gemacht. SynGas hat sich wirklich durch seine Fähigkeit ausgezeichnet, den Kraftstoffverbrauch effektiv zu optimieren. Ich kann SynGas jedem empfehlen, der eine zuverlässige und innovative Lösung sucht.</blockquote>
+      <cite>Andrew Stevens, Maschinenbauingenieur</cite>
+    </div>
+  </div>
+</section>
+
+<section class="section section-gray">
+  <div class="guarantee-box">
+    <h3>Kaufen Sie mit Zuversicht — 100% risikofrei!</h3>
+    <p>Falls Sie nicht zufrieden sind, bieten wir Ihnen unsere <strong>30-tägige Geld-zurück-Garantie</strong>. Schicken Sie Ihr Paket zurück und Sie erhalten den vollen Kaufpreis zurück, ohne Fragen zu stellen.</p>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <h2 class="section-title">Häufig gestellte Fragen</h2>
+  <div class="faq-wrap" style="margin-top:40px;">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Ist SynGas mit allen Automodellen kompatibel? <span class="arrow">+</span></div><div class="faq-a">Ja, SynGas ist mit einer Vielzahl von Fahrzeugmodellen ab Baujahr 1996 kompatibel, die mit einem OBD2-Anschluss ausgestattet sind.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Wie lange dauert es, bis SynGas Ergebnisse zeigt? <span class="arrow">+</span></div><div class="faq-a">SynGas beginnt fast sofort, den Kraftstoffverbrauch zu optimieren. Um die besten Ergebnisse zu erzielen, empfiehlt es sich, etwa eine Woche lang herumzufahren.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Ist SynGas sicher für den Motor des Autos? <span class="arrow">+</span></div><div class="faq-a">Ja, SynGas ist sicher für den Motor Ihres Autos. Es optimiert den Kraftstoffverbrauch, ohne negative Auswirkungen an den Einstellungen Ihres Fahrzeugs zu verursachen.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Kann ich nach der Verwendung von SynGas zu den ursprünglichen Einstellungen zurückkehren? <span class="arrow">+</span></div><div class="faq-a">Auf jeden Fall. SynGas nimmt keine dauerhaften Änderungen an der ECU Ihres Fahrzeugs vor. Wenn Sie jemals zurückkehren möchten, ziehen Sie einfach SynGas vom OBD2-Stecker ab.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Ist SynGas schwierig zu installieren? <span class="arrow">+</span></div><div class="faq-a">Ganz und gar nicht. Stecken Sie es einfach in den OBD2-Stecker Ihres Autos, schalten Sie die Zündung für 30 Sekunden ein und starten Sie den Motor. Keine technischen Kenntnisse erforderlich.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Wie viele SynGas Geräte benötige ich für mein Auto? <span class="arrow">+</span></div><div class="faq-a">Ein SynGas Gerät ist in der Regel ausreichend. Wenn Sie mehrere Fahrzeuge besitzen, sollten Sie zusätzliche Geräte in Betracht ziehen.</div></div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <img src="https://get-syngas.com/img/MTAtY291cG9uLTEucG5n-w_360.png" alt="" style="height:120px;margin-bottom:24px;">
+  <h2>Zeitlich begrenztes Angebot: 75% RABATT SynGas</h2>
+  <p>Sichern Sie sich Ihre SynGas bevor dieses Sonderangebot endet!</p>
+  <div class="cta-features">
+    <span class="cta-feature">30 Tage Geld-zurück</span>
+    <span class="cta-feature">Schneller Versand</span>
+    <span class="cta-feature">24/7 Unterstützung</span>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;">
+    <img src="https://get-syngas.com/img/U29jaWFsLXBlb3BsZS0yLTIucG5n-h_32.png" alt="" style="height:32px;">
+    <span style="color:#f5c518;font-size:20px;">★★★★½</span>
+    <span style="font-weight:700;">4.7</span>
+  </div>
+  <p style="color:#888;font-size:13px;margin-bottom:6px;">Bald endend:</p>
+  <div class="timer-cta" id="timer-cta">00:14:59</div>
+  <a class="btn-cta" href="https://www.fasttrack15.com/P3F53KPH/2KTLBD86/?uid=44292">75% Rabatt erhalten</a>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <img class="logo" src="https://get-syngas.com/wp-content/uploads/logoW-2.svg" alt="SynGas">
+      <p>SynGas ist die moderne Art, Kraftstoff zu sparen und die Langlebigkeit Ihres Autos zu gewährleisten.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Bestellung</h4>
+      <ul>
+        <li><a href="https://get-syngas.com/legal/shipping-delivery-de/">Versand & Lieferung</a></li>
+        <li><a href="https://get-syngas.com/legal/returns-cancellation-de/">Rücksendungen & Rückerstattungen</a></li>
+        <li><a href="https://get-syngas.com/legal/contact-us-de/">Kontaktieren Sie uns</a></li>
+        <li><a href="https://t.trackingmore.com/aefb2e3c">Verfolgen Sie Ihre Bestellung</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Kundenbetreuung</h4>
+      <ul>
+        <li><a href="#">E-Mail senden</a></li>
+        <li><a href="#">24/7 Live-Chat</a></li>
+        <li><a href="tel:+12564488596">+1 (256) 448-8596</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 SynGas | Alle Rechte vorbehalten</p>
+    <img src="https://get-syngas.com/wp-content/uploads/payments-not-blurry.svg" alt="">
+  </div>
+</footer>
+
+<div class="sticky-bar">
+  <div class="left">
+    <span>SynGas — Reduzieren Sie den Kraftstoffverbrauch</span>
+    <span class="stars">★★★★½</span>
+    <span>4.7</span>
+    <span>Bald endend: <span class="timer-val" id="timer-sticky">00:14:59</span></span>
+  </div>
+  <a class="btn-sticky" href="https://www.fasttrack15.com/P3F53KPH/2KTLBD86/?uid=44292">75% sparen</a>
+</div>
+
+<script>
+function toggleFaq(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('show');
+}
+function startTimer(ids, seconds) {
+  let t = seconds;
+  function fmt(s) {
+    return String(Math.floor(s/3600)).padStart(2,'0') + ':' +
+           String(Math.floor((s%3600)/60)).padStart(2,'0') + ':' +
+           String(s%60).padStart(2,'0');
+  }
+  ids.forEach(id => { const el = document.getElementById(id); if(el) el.textContent = fmt(t); });
+  setInterval(() => {
+    t = t > 0 ? t - 1 : seconds;
+    ids.forEach(id => { const el = document.getElementById(id); if(el) el.textContent = fmt(t); });
+  }, 1000);
+}
+startTimer(['timer-top','timer-cta','timer-sticky'], 899);
+</script>
+</body>
+</html>
